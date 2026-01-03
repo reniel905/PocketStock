@@ -15,12 +15,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.pocketstock.activities.DashboardActivity;
-import com.example.pocketstock.contracts.DashboardContract;
+import com.example.pocketstock.activities.RegisterActivity;
 import com.example.pocketstock.contracts.LoginContract;
 import com.example.pocketstock.database.AppDatabase;
 import com.example.pocketstock.factories.LoginPresenterFactory;
 import com.example.pocketstock.models.Login;
-import com.example.pocketstock.presenters.LoginPresenter;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class MainActivity extends AppCompatActivity implements LoginContract.LoginView {
@@ -38,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Log
         checkLogin();
 
         TextInputEditText userNameInput, passwordInput;
-        Button button;
+        Button button, registerButtonMain;
 
-        loginPresenter = LoginPresenterFactory.createLoginPresenter();
+        loginPresenter = LoginPresenterFactory.createLoginPresenter(this);
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -54,7 +53,17 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Log
         userNameInput = findViewById(R.id.userNameInput);
         passwordInput = findViewById(R.id.passwordInput);
         button = findViewById(R.id.loginButton);
+        registerButtonMain = findViewById(R.id.registerButtonMain);
         progressBar = findViewById(R.id.progressBar);
+
+        registerButtonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                navigateToRegistration();
+
+            }
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +153,13 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Log
         startActivity(intent);
         finish();
 
+    }
+
+    @Override
+    public void navigateToRegistration() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

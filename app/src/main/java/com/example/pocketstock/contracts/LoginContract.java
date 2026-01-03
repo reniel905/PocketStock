@@ -1,7 +1,6 @@
 package com.example.pocketstock.contracts;
 
-import com.example.pocketstock.models.UserModel;
-import java.util.List;
+import com.example.pocketstock.models.User;
 
 public interface LoginContract {
 
@@ -11,13 +10,14 @@ public interface LoginContract {
         void wrongCredential();
         void loginSuccess();
         void navigateToDashboard();
+        void navigateToRegistration();
         void checkLogin();
 
     }
 
     interface LoginModel {
 
-        UserModel getUser(String username);
+        User getUser(String username);
 
     }
 

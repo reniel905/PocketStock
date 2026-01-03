@@ -1,5 +1,11 @@
 package com.example.pocketstock.contracts;
 
+import android.view.View;
+
+import com.example.pocketstock.models.Item;
+
+import java.util.List;
+
 public interface DashboardContract {
 
     interface DashboardView {
@@ -16,24 +22,22 @@ public interface DashboardContract {
         void itemCount();
 
         void navigateToLogin();
+        void onItemAdd(View v);
 
     }
 
     interface DashboardModel {
 
-        interface OnFinishedListener {
-            void onFinished(String string);
-        }
-
-        void getItems();
+        List<Item> getItems();
         void getUser();
+        void addItem(Item item);
 
     }
 
     interface DashboardPresenter {
 
-        void onShowItems();
-        void onDestroy();
+         List<Item> sortItems();
+         void addNewItem(Item item);
 
     }
 
