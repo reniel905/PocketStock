@@ -2,6 +2,7 @@ package com.example.pocketstock.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.CompactDecimalFormat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
+import java.util.Locale;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.DashboardView {
 
@@ -49,7 +51,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
             return insets;
         });
 
-        dashboardPresenter = DashboardPresenterFactory.createDashboardPresenter(this);
+        dashboardPresenter = DashboardPresenterFactory.createDashboardPresenter(this, this);
 
         TextView welcomeText = findViewById(R.id.welcomeText);
         Button logoutButton = findViewById(R.id.logoutButton);
@@ -131,18 +133,16 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         List<Item> items = dashboardPresenter.sortItems();
         RecyclerView itemListView = findViewById(R.id.productListRecView);
         TextView noProductsText = findViewById(R.id.noProductsText);
-        ItemListAdapter itemListAdapter = new ItemListAdapter(this, items);
+        ItemListAdapter itemListAdapter = new ItemListAdapter(this, items, dashboardPresenter);
         itemListView.setLayoutManager(new LinearLayoutManager(this));
         itemListView.setAdapter(itemListAdapter);
 
         itemCount = itemListAdapter.getItemCount();
         totalPrice = 0; // set to 0 when refreshed to get accurate data.
 
-        for (Item item: items
-             ) {
+        for (Item item: items) {
 
             totalPrice += (double) item.price * item.quantity;
-
         }
 
         itemCount();
@@ -164,20 +164,16 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @Override
     public void totalValue() {
 
-        double totalValue = totalPrice * itemCount;
-
+        double totalValue = totalPrice;
         // double totalValue = 23879; // for testing
 
-        TextView totalItemsValue = findViewById(R.id.totalValue);
-        totalItemsValue.setText(String.valueOf(totalValue));
+        CompactDecimalFormat cdf = CompactDecimalFormat.getInstance(
+                Locale.US,
+                CompactDecimalFormat.CompactStyle.SHORT
+        );
 
-        if (totalValue < 10000) {
-            totalItemsValue.setText(String.valueOf(totalValue).substring(0,1).concat(".").concat(String.valueOf(totalValue).substring(1,2)).concat("K"));
-        } else if (totalValue >= 10000) {
-            totalItemsValue.setText(String.valueOf(totalValue).substring(0,2).concat(".").concat(String.valueOf(totalValue).substring(2,3)).concat("K"));
-        } else if (totalValue >= 100000) {
-            totalItemsValue.setText(String.valueOf(totalValue).substring(0,3).concat(".").concat(String.valueOf(totalValue).substring(3,4)).concat("K"));
-        }
+        TextView totalItemsValue = findViewById(R.id.totalValue);
+        totalItemsValue.setText(cdf.format(totalValue));
 
     }
 

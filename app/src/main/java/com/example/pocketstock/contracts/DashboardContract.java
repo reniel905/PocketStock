@@ -31,6 +31,8 @@ public interface DashboardContract {
         List<Item> getItems();
         void getUser();
         void addItem(Item item);
+        void updateItem(int id, String productName, String category, double price, int quantity);
+        void deleteItem(int id);
 
     }
 
@@ -38,6 +40,8 @@ public interface DashboardContract {
 
          List<Item> sortItems();
          void addNewItem(Item item);
+         void updateItem(int id, String productName, String category, double price, int quantity);
+         void deleteItem(int id);
 
     }
 

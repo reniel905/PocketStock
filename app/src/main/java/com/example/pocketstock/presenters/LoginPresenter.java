@@ -8,7 +8,7 @@ import com.example.pocketstock.models.User;
 
 public class LoginPresenter implements LoginContract.LoginPresenter{
 
-    private Context context;
+    private final Context context;
 
     public LoginPresenter(Context context) {
         this.context = context;
